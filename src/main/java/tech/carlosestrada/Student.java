@@ -2,16 +2,17 @@ package tech.carlosestrada;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Student {
 	private String firstName;
 	private String lastName;
-	private Double[] testScores;
+	private ArrayList<Double> testScores;
 
 	public Student(String firstName, String lastName, Double[] examScores){
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.testScores = examScores;
+		this.testScores = new ArrayList<>(Arrays.asList(examScores));
 	}
 
 	public String getFirstName() {
@@ -31,21 +32,16 @@ public class Student {
 	}
 
 	public Double[] getTestScores() {
-		return testScores;
+		Double[] array = new Double[testScores.size()];
+		return testScores.toArray(array);
 	}
 
 	public void addExamScore(Double examScore) {
-		Double[] tmpScoreArray = new Double[this.testScores.length+1];
-
-		// Copy all the current testScores into the tmpScoreArray
-		System.arraycopy(this.testScores, 0, tmpScoreArray,0, this.testScores.length);
-
-		tmpScoreArray[testScores.length] = examScore;
-		this.testScores = tmpScoreArray;
+		this.testScores.add(examScore);
 	}
 
 	public void setExamScore(int examNumber, double newScore) {
-		this.testScores[examNumber -1] = newScore;
+		this.testScores.set(examNumber, newScore);
 	}
 
 	public double getAverageExamScore(){
@@ -55,11 +51,11 @@ public class Student {
 			scoreTotal += score;
 		}
 
-		return scoreTotal / this.testScores.length;
+		return scoreTotal / this.testScores.size();
 	}
 
 	public int getNumberOfExamsTaken(){
-		return testScores.length;
+		return testScores.size();
 	}
 
 	public String getExamScores(){
@@ -68,8 +64,8 @@ public class Student {
 		DecimalFormat df = new DecimalFormat("###");
 
 
-		for (int i = 0; i < testScores.length; i++) {
-			response += "\n\tExam " + (i +1) + " -> " + df.format(testScores[i]);
+		for (int i = 0; i < testScores.size(); i++) {
+			response += "\n\tExam " + (i +1) + " -> " + df.format(testScores.get(i));
 		}
 
 		return response;
